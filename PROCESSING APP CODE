@@ -1,0 +1,69 @@
+import processing.serial.*;
+
+Serial myPort;
+
+int sliderX = 50;
+int sliderY = 70;
+int sliderWidth = 400;
+int sliderHeight = 20;
+
+int minVal = 725;
+int maxVal = 6000;
+int pulseDelay = 850;
+
+boolean dragging = false;
+
+void setup() {
+  size(500, 150);
+  background(220);
+
+
+  myPort = new Serial(this, "COM4", 115200); //ENSURE THIS IS CHANGED TO YOU RIGHT COM#
+}
+
+void draw() {
+  background(220);
+
+
+  fill(200);
+  rect(sliderX, sliderY, sliderWidth, sliderHeight);
+
+  float handleX = map(pulseDelay, minVal, maxVal, sliderX, sliderX + sliderWidth);
+
+
+  fill(100, 150, 250);
+  rect(handleX - 10, sliderY - 5, 20, sliderHeight + 10);
+
+
+  fill(0);
+  textSize(16);
+  text("Pulse delay (µs): " + pulseDelay, sliderX, sliderY - 20);
+}
+
+void mousePressed() {
+  float handleX = map(pulseDelay, minVal, maxVal, sliderX, sliderX + sliderWidth);
+  if (mouseX > sliderX && mouseX < sliderX + sliderWidth &&
+      mouseY > sliderY - 5 && mouseY < sliderY + sliderHeight + 5) {
+    dragging = true;
+    updatePulseDelay();
+  }
+}
+
+
+void mouseDragged() {
+  if (dragging) {
+    updatePulseDelay();
+  }
+}
+
+
+void mouseReleased() {
+  dragging = false;
+}
+
+void updatePulseDelay() {
+  pulseDelay = int(map(mouseX, sliderX, sliderX + sliderWidth, minVal, maxVal));
+  pulseDelay = constrain(pulseDelay, minVal, maxVal);
+
+  myPort.write(pulseDelay + "\n");
+}
