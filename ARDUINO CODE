@@ -1,0 +1,24 @@
+int tachPin = 8; //SIGNAL PIN
+int pulseDelay = 850;  // START PULSE DELAY
+
+void setup() {
+  pinMode(tachPin, OUTPUT);
+  Serial.begin(115200);  //SERIAL
+}
+
+void loop() {
+
+  if (Serial.available() > 0) {
+    int val = Serial.parseInt();  
+    if (val > 0) {             
+      pulseDelay = constrain(val, 100, 200000);
+    }
+    while(Serial.available() > 0) { Serial.read(); } 
+  }
+
+  // PULSES
+  digitalWrite(tachPin, HIGH);
+  delayMicroseconds(pulseDelay);
+  digitalWrite(tachPin, LOW);
+  delayMicroseconds(pulseDelay);
+}
