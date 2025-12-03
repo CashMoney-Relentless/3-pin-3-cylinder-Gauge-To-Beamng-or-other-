@@ -13,19 +13,19 @@ This is a way to use a 3 pin, 3 cylinder gauge that you might have laying around
 
 ## Installation
 1. **BeamNG mod**
-- Copy `gaugesController.lua` into your vehicle folder inside the mod (see file tree).
-- Add the `luaControllers` snippet to your vehicle's jbeam.
+- Copy `gaugesController.lua` into your vehicle folder inside the mod.
+- Add the `luaControllers` code to your vehicle's jbeam.
 - Repack the mod or keep it in `mods/unpacked`.
 
 
 2. **Arduino**
 - Open `tach_output.ino` in Arduino IDE.
-- Upload to your Arduino that appears on `COM4`.
-- Ensure `tachPin` is connected to a proper driver and then to your gauge.
+- Upload to your Arduino `COM4`.
+- the `tachPin` should be the one that is connected to you gauge.
 
 
 3. **Processing**
-- Open `BeamNG_to_Arduino_Tach.pde` in Processing.
+- Open `the processing code` in Processing.
 - If the BeamNG Lua could not open COM5, set `USE_UDP_FALLBACK = true` and configure BeamNG's telemetry UDP to send RPMs to the listener you implement.
 - Run the Processing sketch. It will attempt to open COM5 and COM4.
 
@@ -33,9 +33,7 @@ This is a way to use a 3 pin, 3 cylinder gauge that you might have laying around
 ## Troubleshooting
 - If BeamNG's `io.open` to COM5 fails, enable `USE_UDP_FALLBACK` and configure BeamNG telemetry to UDP. Then adapt the Processing sketch's UDP section (comment included) to read telemetry.
 - If Serial ports fail to open in Processing, try running Processing as Administrator.
-- Always use a proper driver for gauge coils; Arduino pins cannot drive them directly.
 
 
 ## Notes
-- You can adjust mapping in Processing: `map(rpm, 0, 8000, 5000, 700)` to fit your gauge.
-- The pipeline is: BeamNG (COM5) -> Processing -> Arduino (COM4) -> gauge.
+- You can adjust the miliseconds between the pulses in Processing to fit your gauge.
